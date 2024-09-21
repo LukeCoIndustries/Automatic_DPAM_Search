@@ -50,3 +50,14 @@ Your_data_with_ECOD_IDs_df = human_alpha_fold_class_df[human_alpha_fold_class_df
 ECOD_domain_dictionary_df = ECOD_domain_dictionary_df.rename(columns = {ECOD_domain_dictionary_df[0]: Your_data_with_ECOD_IDs_df[0]})
 #now I can translate
 Your_data_with_classifications_df = pd.merge(Your_data_with_ECOD_IDs_df, ECOD_domain_dictionary_df, on = Your_data_with_ECOD_IDs_df[0], how = 'inner')
+
+###################################################
+
+#Counting the proteins that were unclassified
+Unclassified_proteins = total_protein - len(Your_data_with_classifications_df.columns[0])
+print("There were " + Unclassified_proteins + " proteins classififed")
+
+###################################################
+
+# organizing data
+
