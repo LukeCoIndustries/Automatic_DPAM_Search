@@ -12,6 +12,8 @@ import matplotlib.pyplot as plt
 #--------------------------------------------------
 #add the file path for your proteomic data (Excel Sheet)
 your_data = ""
+#What do you want you output file to be named (replace [insert here])
+output_file = "[insert here].xlsx"
 
 #Whar column is your uniprot IDs in (in python Column 1 = 0, Column 2 = 1 , ect.)
 Uniprot_column = 0 #edit the number to your columns
@@ -60,4 +62,8 @@ print("There were " + Unclassified_proteins + " proteins classififed")
 ###################################################
 
 # organizing data
+# to create an organized excel sheet, we need to work with excel data not data frames
+#create temporary files
+Your_data_with_classifications_df.to_excel("temporary_file.xlsx", index = False)
+temporary_file = pd.ExcelFile("temporary_file.xlsx")
 
