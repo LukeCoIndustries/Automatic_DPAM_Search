@@ -42,5 +42,11 @@ print("There are "+total_protein+" proteins")
 
 ###################################################
 
+#Finding your proteins Uniprot ID in Human Proteome Classifications
+Your_data_with_ECOD_IDs_df = human_alpha_fold_class_df[human_alpha_fold_class_df.iloc[:,0].isin(your_data_onlyUniProt_df[:,0])]
 
-
+#translating your proteins ECOD ID into domain names
+#first need to make column names the same( to avoid errors )
+ECOD_domain_dictionary_df = ECOD_domain_dictionary_df.rename(columns = {ECOD_domain_dictionary_df[0]: Your_data_with_ECOD_IDs_df[0]})
+#now I can translate
+Your_data_with_classifications_df = pd.merge(Your_data_with_ECOD_IDs_df, ECOD_domain_dictionary_df, on = Your_data_with_ECOD_IDs_df[0], how = 'inner')
