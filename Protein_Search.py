@@ -6,7 +6,7 @@
 #This is the extra databases needed to be imported
 import pandas as pd
 import os
-import matplotlib.pyplot as ply
+import matplotlib.pyplot as plt
 ###################################################
 #!!! ADD YOUR INFORMATIOM HERE !!!
 #--------------------------------------------------
