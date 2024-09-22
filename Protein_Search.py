@@ -23,6 +23,7 @@ Uniprot_column = 0 #edit the number to your columns
 
 #Would you like a pie chart summary of each subclass of domain structures (yes or no)
 Pie_chart="" 
+output_folder = "" #this is where the pie charts will go
 
 ###################################################
 
@@ -71,3 +72,57 @@ print("There were " + Unclassified_proteins + " proteins classififed")
 Your_data_with_classifications_df.to_excel("temporary_file.xlsx", index = False)
 temporary_file = pd.ExcelFile("temporary_file.xlsx")
 
+#replacing / with _ in the ECOD Names
+def replace_slash(value):
+    return value.replace('/','_')
+
+#creating an empty dictionary for future sheet creation
+new_sheet = {}
+
+#Organizng
+for sheet_name in temporary_file.sheet_names:
+    df = temporary_file.parse(sheet_name)
+    df['arch_name'] = df["arch_name"].apply(replace_slash)
+    arch_name = df.iloc[:,2]
+    for value in arch_name.unique():
+        if pd.notna(value):
+            if value not in arch_name:
+                new_sheet[value] = pd.DataFrame(columns=df.columns)
+            add_row = df[arch_name == value]
+            new_sheet[value] = pd.concat([new_sheet[value], add_row])
+
+#Creating the excel
+with pd.ExcelFile(output_file, engine = "openpyxl") as writer:
+    for sheet_name, df in new_sheet.items():
+        df.to_excel(writer, sheet_name = sheet_name, index = False)
+
+#removing temporary file
+temporary_file = None
+df = None
+os.remove("temporary_file.xlsx")
+
+print("Created organized sheet")
+
+###################################################
+#Creating Pie Charts
+if Pie_chart == "yes":
+    def create_pie_charts(output_file, output_folder):
+        excel = pd.ExcelFile(output_file)
+
+        if not os.path.exists(output_folder): #makes the folder
+            os.makedirs(output_folder)
+
+        count_arch = {}
+
+        for sheet_name in excel.sheet_names:
+            df = pd.read_excel(output_file, sheet_name = sheet_name)
+
+            column_value = df.iloc[:,5]
+
+            value_counts = column_value.value_counts()
+
+        total_value_count = total_protein
+
+        for sheet_name in xls.sheet_name:
+            df = pd.read_excel(output_file, sheet_name = sheet_name)
+print("Finished")
