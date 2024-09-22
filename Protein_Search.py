@@ -7,16 +7,20 @@
 import pandas as pd
 import os
 import matplotlib.pyplot as plt
+# make sure you have pandas and matplotlib downloaded
+# if not type "pip intall pandas" and "pip install matplotlib" in your command terminal
 ###################################################
 #!!! ADD YOUR INFORMATIOM HERE !!!
 #--------------------------------------------------
-#add the file path for your proteomic data (Excel Sheet)
+#add the relative path to your proteomic data file (Excel Sheet)
 your_data = ""
+
 #What do you want you output file to be named (replace [insert here])
 output_file = "[insert here].xlsx"
 
 #Whar column is your uniprot IDs in (in python Column 1 = 0, Column 2 = 1 , ect.)
 Uniprot_column = 0 #edit the number to your columns
+
 #Would you like a pie chart summary of each subclass of domain structures (yes or no)
 Pie_chart="" 
 
