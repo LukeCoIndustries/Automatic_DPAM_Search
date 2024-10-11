@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #################################################
-# Protein Search using ECOD's AlphaFold DataBase
+# Automatic DPAM Search
 # Creater: Luke Coster
 ##################################################
 #This is the extra databases needed to be imported
@@ -19,7 +19,7 @@ your_data = ""
 #What do you want you output file to be named (replace [insert here])
 output_file = ""+".xlsx"
 
-#Whar column is your uniprot IDs in (in python Column 1 = 0, Column 2 = 1 , ect.)
+#What column is your uniprot IDs in (in python Column 1 = 0, Column 2 = 1 , ect.)
 Uniprot_column = 0 #edit the number to your columns
 
 # What column is your Z score (in python Column 1 = 0, Column 2 = 1 , ect.)
