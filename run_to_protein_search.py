@@ -22,14 +22,23 @@ output_file = input("") + ".xlsx"
 print("What column is your uniprot IDs in (in python Column 1 = 0, Column 2 = 1 , ect.)?")
 Uniprot_column = int(input())
 
+print("Do you have a column with an aditional protein identification. such as official gene ID (yes or no)")
+indentification = input("")
+if indentification == 'yes' or "YES" or "Yes":
+    print("What column is that identification")
+    indentification_column = int(input())
+    indentification = 'done'
+
 print("Do you want each arch name (all alpha,all beta, alpha superhelix, ect) to be organized into their own sheet? (yes or no)")
 organize = input("")
-
+if not organize == 'yes' or 'no' or "YES" or "Yes" or "No" or "NO" or "no":
+    print("that was neither yes or no. pleas re-enter (capitalization matters)")
+    organize = input("")
 print("Do you want to run all your proteins are just the top 'x' amount of proteins? (all or top)")
 run = input("")
 
 ###################################################
-if run == 'top':
+if run == 'top' or 'TOP' or 'Top':
     print("What column is your Z score? (in python Column 1 = 0, Column 2 = 1 , ect.)")
     Z_score_column = int(input())
 
@@ -84,13 +93,24 @@ if run == 'top':
         if value not in Your_data_with_classifications_df['UniProt'].values:
             newrow = {'UniProt': value, 'ECOD T-group identifier': 'no found', 'arch_name': "undefined", 'x_name': "undefined", 'h_name': "undefined", "t_name": "undefined"}
             Your_data_with_classifications_df.loc[len(Your_data_with_classifications_df)]= newrow
+    #adds ID as a column
+    if indentification == 'done':
+        newcolumn = []  
+        for value in Your_data_with_classifications_df["UniProt"]:
+            result = your_data_only_top_number_df.loc[your_data_only_top_number_df[your_data_only_top_number_df.columns[Uniprot_column]] == value, your_data_only_top_number_df.columns[indentification_column]].values[0]
+            newcolumn.append(result)  
+    Your_data_with_classifications_df["ID"] = newcolumn
+    #reorganizing list to put ID first
+    columns = list(Your_data_with_classifications_df.columns)
+    new_order = [columns[-1]] + columns[:-1]
+    Your_data_with_classifications_df = Your_data_with_classifications_df[new_order]
 
     ###################################################
 
     # organizing data
     # to create an organized excel sheet, we need to work with excel data not data frames
     #create temporary files
-    if organize == 'yes':
+    if organize == 'yes' or 'Yes' or "YES":
         Your_data_with_classifications_df.to_excel("temporary_file.xlsx", index = False)
         temporary_file = pd.ExcelFile("temporary_file.xlsx")
 
@@ -117,12 +137,11 @@ if run == 'top':
         with pd.ExcelWriter(output_file, engine = "openpyxl") as writer:
             for sheet_name, df in new_sheet.items():
                 df.to_excel(writer, sheet_name = sheet_name, index = False)
+        temporary_file.close()
         os.remove("temporary_file.xlsx")
-    elif organize == 'no':
-        Your_data_with_classifications_df.to_excel(output_file, index =False)
     else:
-        print("you did not say you wanted it organized or not")
-elif run == 'all':
+        Your_data_with_classifications_df.to_excel(output_file, index =False)
+elif run == 'all' or 'All' or 'ALL':
     print("started")
     #This is opening the files for me adjust
     human_alpha_fold_class_raw_df = pd.read_excel("HomSa_raw_domains.xlsx") #Contains Uniprot ID's And ECOD domain classifications for AlphaFold Models
@@ -171,15 +190,27 @@ elif run == 'all':
         if value not in Your_data_with_classifications_df['UniProt'].values:
             newrow = {'UniProt': value, 'ECOD T-group identifier': 'no found', 'arch_name': "undefined", 'x_name': "undefined", 'h_name': "undefined", "t_name": "undefined"}
             Your_data_with_classifications_df.loc[len(Your_data_with_classifications_df)]= newrow
-        
-    #
+    
+    #adding identification column
+    if indentification == 'done':
+        if indentification == 'done':
+            newcolumn = []  
+        for value in Your_data_with_classifications_df["UniProt"]:
+            result = your_data_only_top_number_df.loc[your_data_only_top_number_df[your_data_only_top_number_df.columns[Uniprot_column]] == value, your_data_only_top_number_df.columns[indentification_column]].values[0]
+            newcolumn.append(result)  
+        Your_data_with_classifications_df["ID"] = newcolumn
+        #reorganizing list to put ID first
+        columns = list(Your_data_with_classifications_df.columns)
+        new_order = [columns[-1]] + columns[:-1]
+        Your_data_with_classifications_df = Your_data_with_classifications_df[new_order]
+
 
     ###################################################
 
     # organizing data
     # to create an organized excel sheet, we need to work with excel data not data frames
     #create temporary files
-    if organize == 'yes':
+    if organize == 'yes' or 'Yes' or "YES":
         Your_data_with_classifications_df.to_excel("temporary_file.xlsx", index = False)
         temporary_file = pd.ExcelFile("temporary_file.xlsx")
 
@@ -206,8 +237,9 @@ elif run == 'all':
         with pd.ExcelWriter(output_file, engine = "openpyxl") as writer:
             for sheet_name, df in new_sheet.items():
                 df.to_excel(writer, sheet_name = sheet_name, index = False)
+        temporary_file.close()
         os.remove("temporary_file.xlsx")
-    elif organize == 'no':
+    elif organize == 'no' or 'NO' or 'No':
         Your_data_with_classifications_df.to_excel(output_file, index =False)
     else:
         print("you did not say you wanted it organized or not")
