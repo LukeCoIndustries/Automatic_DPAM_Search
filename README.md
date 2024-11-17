@@ -1,4 +1,4 @@
-|  Updated 10/10/2024  | 
+|  Updated 11/17/2024  | 
 \
 |This code allows one to search through ECOD's DPAM files using a list of Uniprot ID's from any proteomic data   |
 |This uses Python and the python library pandas|
